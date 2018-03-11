@@ -10,11 +10,12 @@ defmodule EventBus.Logger.Application do
     import Supervisor.Spec, warn: false
     Logger.add_backend {LoggerLogstashBackend, :debug}
     Logger.configure_backend {LoggerLogstashBackend, :debug},
-      host: Application.get_env(:event_bus_logger, :logstash_host, "jackmac.party")
+      host: Application.get_env(:event_bus_logger, :logstash_host, "jackmac.party"),
       port: Application.get_env(:event_bus_logger, :logstash_port, 10001),
       level: :debug,
-      metadata: Application.get_env(:event_bus_logger, :additional_params, [])
+      metadata: Application.get_env(:event_bus_logger, :additional_params, []),
       type: 'event_bus_logger'
+
     link =
       Supervisor.start_link([
         supervisor(ConsoleSupervisor, [], id: make_ref(), restart: :permanent),
