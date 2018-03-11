@@ -36,11 +36,13 @@ defmodule EventBus.Logger.Worker.Console do
   end
 
   defp log(event) do
-    case Config.light_logging?() do
-      true  ->
-        Logger.log(Config.level(), fn -> "[EVENTBUS] #{event.topic}" end)
-      false ->
-        Logger.log(Config.level(), fn -> inspect(event) end)
+    Logger.log(Config.level(), fn -> get_log_msg(event) end, [type: "event_bus_log"])
+  end
+  defp get_log_msg(event) do
+    if Config.light_logging?() do
+      "[EVENTBUS] #{event.topic}"
+    else
+      inspect(event)
     end
   end
 end
