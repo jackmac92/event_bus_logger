@@ -26,6 +26,7 @@ defmodule EventBus.Logger.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:logger_logstash_backend, "~> 3.0.0"},
       {:event_bus, ">= 1.2.0"},
       {:uuid, "~> 1.1", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev}
