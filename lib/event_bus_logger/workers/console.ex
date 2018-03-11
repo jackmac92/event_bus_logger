@@ -20,12 +20,10 @@ defmodule EventBus.Logger.Worker.Console do
   ## Callbacks
 
   @doc false
-  def start_link,
-    do: GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+  def start_link, do: GenServer.start_link(__MODULE__, nil, name: __MODULE__)
 
   @doc false
-  def init(_opts),
-    do: {:ok, nil}
+  def init(_opts), do: {:ok, nil}
 
   @doc false
   def handle_cast({topic, id}, state) do
@@ -36,14 +34,10 @@ defmodule EventBus.Logger.Worker.Console do
   end
 
   defp log(event) do
-    Logger.log(Config.level(), fn -> get_log_msg(event) end, [event_topic: event.topic])
-  end
-
-  defp get_log_msg(event) do
-    if Config.light_logging?() do
-      "[EVENTBUS] #{event.topic}"
-    else
-      inspect(event)
-    end
+    Logger.info(
+      event_topic: event.topic,
+      event_data: event.data,
+      meta: event |> Map.take(:id, :occurred_at, :source)
+    )
   end
 end
