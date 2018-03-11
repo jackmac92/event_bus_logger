@@ -37,7 +37,7 @@ defmodule EventBus.Logger.Worker.Console do
     Logger.info(
       event_topic: event.topic,
       event_data: event.data,
-      meta: event |> Map.take(:id, :occurred_at, :source)
+      meta: event |> Map.take([:id, :occurred_at, :source])
     )
   end
 end
