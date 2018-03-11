@@ -34,10 +34,15 @@ defmodule EventBus.Logger.Worker.Console do
   end
 
   defp log(event) do
+    getv = fn k -> event |> Map.get(k) |> inspect end
+
     Logger.info(
-      event_topic: event.topic,
-      event_data: event.data,
-      meta: event |> Map.take([:id, :occurred_at, :source])
+      "[EVENT_BUS]",
+      evbus_topic: "#{event.topic}",
+      evbus_data: inspect(event.data),
+      evbus_id: getv.(:id),
+      evbus_source: getv.(:source),
+      evbus_occured_at: getv.(:occured_at)
     )
   end
 end
