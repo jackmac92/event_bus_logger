@@ -9,9 +9,14 @@ defmodule EventBus.Logger.Application do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
     Logger.add_backend {LoggerLogstashBackend, :debug}
+    logger_host = Application.get_env(:event_bus_logger, :logstash_host)
+    if ! logger_host do
+      raise "Couldn't get logger_host from config"
+    end
+    logger_port = Application.get_env(:event_bus_logger, :logstash_port, 10001)
     Logger.configure_backend {LoggerLogstashBackend, :debug},
-      host: Application.get_env(:event_bus_logger, :logstash_host, "jackmac.party"),
-      port: Application.get_env(:event_bus_logger, :logstash_port, 10001),
+      host: logger_host,
+      port: logger_port,
       level: :debug,
       metadata: Application.get_env(:event_bus_logger, :additional_params, []),
       type: 'event_bus_logger'
